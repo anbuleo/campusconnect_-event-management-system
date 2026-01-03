@@ -1,0 +1,5 @@
+{
+  "name": "CampusConnect: Event Management System",
+  "description": "A campus event platform with role-based access for students, organizers, and admins. College project built with React.",
+  "requestFramePermissions": []
+}
