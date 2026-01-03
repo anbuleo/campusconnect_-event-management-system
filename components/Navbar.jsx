@@ -1,16 +1,18 @@
 
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { UserRole } from '../types.js';
 import { APP_NAME } from '../constants.js';
 
-const Navbar = ({ user, onLogout, onNavigate, notificationCount }) => {
+const Navbar = ({ user, onLogout, notificationCount }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16 items-center">
-                    <div className="flex items-center cursor-pointer" onClick={() => onNavigate('landing')}>
+                    <div className="flex items-center cursor-pointer" onClick={() => navigate('/')}>
                         <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
                             {APP_NAME}
                         </span>
@@ -18,12 +20,12 @@ const Navbar = ({ user, onLogout, onNavigate, notificationCount }) => {
 
                     {/* Desktop Links */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <button onClick={() => onNavigate('events')} className="text-gray-600 hover:text-indigo-600 font-medium">Events</button>
+                        <button onClick={() => navigate('/events')} className="text-gray-600 hover:text-indigo-600 font-medium">Events</button>
                         {user && (
                             <>
-                                <button onClick={() => onNavigate('dashboard')} className="text-gray-600 hover:text-indigo-600 font-medium">My Dashboard</button>
+                                <button onClick={() => navigate('/dashboard')} className="text-gray-600 hover:text-indigo-600 font-medium">My Dashboard</button>
                                 {user.role === UserRole.ADMIN && (
-                                    <button onClick={() => onNavigate('admin')} className="text-gray-600 hover:text-indigo-600 font-medium">Admin Panel</button>
+                                    <button onClick={() => navigate('/admin')} className="text-gray-600 hover:text-indigo-600 font-medium">Admin Panel</button>
                                 )}
                             </>
                         )}
@@ -57,7 +59,7 @@ const Navbar = ({ user, onLogout, onNavigate, notificationCount }) => {
                             </div>
                         ) : (
                             <button
-                                onClick={() => onNavigate('login')}
+                                onClick={() => navigate('/login')}
                                 className="bg-indigo-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-indigo-700 transition shadow-sm"
                             >
                                 Login
@@ -77,12 +79,12 @@ const Navbar = ({ user, onLogout, onNavigate, notificationCount }) => {
             {/* Mobile Menu */}
             {isOpen && (
                 <div className="md:hidden bg-white border-t px-4 py-4 space-y-4">
-                    <button onClick={() => { onNavigate('events'); setIsOpen(false); }} className="block w-full text-left font-medium py-2">Events</button>
+                    <button onClick={() => { navigate('/events'); setIsOpen(false); }} className="block w-full text-left font-medium py-2">Events</button>
                     {user && (
-                        <button onClick={() => { onNavigate('dashboard'); setIsOpen(false); }} className="block w-full text-left font-medium py-2">My Dashboard</button>
+                        <button onClick={() => { navigate('/dashboard'); setIsOpen(false); }} className="block w-full text-left font-medium py-2">My Dashboard</button>
                     )}
                     {!user && (
-                        <button onClick={() => { onNavigate('login'); setIsOpen(false); }} className="block w-full text-left font-medium py-2">Login</button>
+                        <button onClick={() => { navigate('/login'); setIsOpen(false); }} className="block w-full text-left font-medium py-2">Login</button>
                     )}
                 </div>
             )}

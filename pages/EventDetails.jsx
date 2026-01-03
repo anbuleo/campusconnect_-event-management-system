@@ -1,8 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../services/api.js';
 
-const EventDetails = ({ eventId, user, onNavigate, onRefresh }) => {
+const EventDetails = ({ user, onRefresh }) => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [event, setEvent] = useState(null);
     const [isRegistering, setIsRegistering] = useState(false);
     const [timeLeft, setTimeLeft] = useState(null);
@@ -10,11 +13,11 @@ const EventDetails = ({ eventId, user, onNavigate, onRefresh }) => {
     useEffect(() => {
         const fetchEvent = async () => {
             const allEvents = await api.getEvents();
-            const found = allEvents.find(e => e.id === eventId);
+            const found = allEvents.find(e => e.id === id);
             if (found) setEvent(found);
         };
         fetchEvent();
-    }, [eventId]);
+    }, [id]);
 
     useEffect(() => {
         if (!event) return;
@@ -39,16 +42,16 @@ const EventDetails = ({ eventId, user, onNavigate, onRefresh }) => {
 
     const handleRegister = async () => {
         if (!user) {
-            onNavigate('login');
+            navigate('/login');
             return;
         }
         setIsRegistering(true);
-        const success = await api.registerForEvent(user.id, eventId);
+        const success = await api.registerForEvent(user.id, id);
         if (success) {
             alert("Successfully registered!");
             onRefresh();
             const allEvents = await api.getEvents();
-            setEvent(allEvents.find(e => e.id === eventId) || null);
+            setEvent(allEvents.find(e => e.id === id) || null);
         } else {
             alert("Registration failed or already registered.");
         }
@@ -58,10 +61,10 @@ const EventDetails = ({ eventId, user, onNavigate, onRefresh }) => {
     const handleUnregister = async () => {
         if (!user) return;
         if (window.confirm("Are you sure you want to cancel your registration?")) {
-            await api.unregisterFromEvent(user.id, eventId);
+            await api.unregisterFromEvent(user.id, id);
             onRefresh();
             const allEvents = await api.getEvents();
-            setEvent(allEvents.find(e => e.id === eventId) || null);
+            setEvent(allEvents.find(e => e.id === id) || null);
         }
     };
 
@@ -96,7 +99,7 @@ const EventDetails = ({ eventId, user, onNavigate, onRefresh }) => {
     return (
         <div className="max-w-5xl mx-auto px-4 py-12">
             <div className="flex justify-between items-center mb-8">
-                <button onClick={() => onNavigate('events')} className="flex items-center text-indigo-600 font-bold hover:translate-x-[-4px] transition-transform">
+                <button onClick={() => navigate('/events')} className="flex items-center text-indigo-600 font-bold hover:translate-x-[-4px] transition-transform">
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                     Back to Events
                 </button>

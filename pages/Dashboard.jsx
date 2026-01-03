@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { EventCategory } from '../types.js';
 import { api } from '../services/api.js';
 import { CATEGORIES } from '../constants.js';
 
-const Dashboard = ({ user, events, onNavigate, onRefresh }) => {
+const Dashboard = ({ user, events, onRefresh }) => {
     const [showTicket, setShowTicket] = useState(null);
-    const [isUpdatingInterests, setIsUpdatingInterests] = useState(false);
+    const navigate = useNavigate();
 
     const registeredEvents = events.filter(e => user.registeredEvents.includes(e.id));
     const upcomingEvents = registeredEvents.filter(e => new Date(e.date) >= new Date());
@@ -78,7 +79,7 @@ const Dashboard = ({ user, events, onNavigate, onRefresh }) => {
                                         <h3 className="font-bold text-lg mb-1 group-hover:text-indigo-600 transition">{event.title}</h3>
                                         <p className="text-sm text-gray-500 mb-4">{new Date(event.date).toLocaleDateString()} • {event.location}</p>
                                         <button
-                                            onClick={() => onNavigate('event-details', event.id)}
+                                            onClick={() => navigate(`/events/${event.id}`)}
                                             className="w-full py-2 bg-gray-50 text-gray-600 rounded-xl text-xs font-bold hover:bg-indigo-50 hover:text-indigo-600 transition"
                                         >
                                             Event Details
@@ -90,7 +91,7 @@ const Dashboard = ({ user, events, onNavigate, onRefresh }) => {
                             <div className="bg-gray-50 rounded-3xl p-12 text-center border-2 border-dashed border-gray-200">
                                 <p className="text-gray-400 font-medium mb-4">No tickets found. Start exploring campus events!</p>
                                 <button
-                                    onClick={() => onNavigate('events')}
+                                    onClick={() => navigate('/events')}
                                     className="bg-indigo-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-indigo-700 transition"
                                 >
                                     Discover Events
@@ -102,14 +103,14 @@ const Dashboard = ({ user, events, onNavigate, onRefresh }) => {
 
                 <div className="space-y-8">
                     <section className="bg-white p-6 rounded-3xl border shadow-sm">
-                        <h3 className="font-bold text-lg mb-4">AI Recommendations</h3>
+                        <h3 className="font-bold text-lg mb-4">Recommendations</h3>
                         <div className="space-y-4">
                             {events
                                 .filter(e => !user.registeredEvents.includes(e.id) && e.status === 'APPROVED')
                                 .filter(e => user.interests?.includes(e.category))
                                 .slice(0, 3)
                                 .map(event => (
-                                    <div key={event.id} onClick={() => onNavigate('event-details', event.id)} className="flex items-center gap-3 cursor-pointer group">
+                                    <div key={event.id} onClick={() => navigate(`/events/${event.id}`)} className="flex items-center gap-3 cursor-pointer group">
                                         <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0">
                                             <img src={event.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition" alt="" />
                                         </div>
