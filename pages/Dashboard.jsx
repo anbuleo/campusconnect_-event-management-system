@@ -29,7 +29,7 @@ const Dashboard = ({ user, events, onRefresh }) => {
                     <h1 className="text-4xl font-extrabold text-gray-900">Student Dashboard</h1>
                     <p className="text-gray-500 mt-2">Personalize your experience and manage your upcoming events.</p>
                 </div>
-                <div className="bg-white p-4 rounded-2xl border shadow-sm">
+                {/* <div className="bg-white p-4 rounded-2xl border shadow-sm">
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Your Interests</p>
                     <div className="flex flex-wrap gap-2">
                         {CATEGORIES.map(cat => {
@@ -46,7 +46,7 @@ const Dashboard = ({ user, events, onRefresh }) => {
                             );
                         })}
                     </div>
-                </div>
+                </div> */}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -101,7 +101,7 @@ const Dashboard = ({ user, events, onRefresh }) => {
                     </section>
                 </div>
 
-                <div className="space-y-8">
+                {/* <div className="space-y-8">
                     <section className="bg-white p-6 rounded-3xl border shadow-sm">
                         <h3 className="font-bold text-lg mb-4">Recommendations</h3>
                         <div className="space-y-4">
@@ -125,7 +125,7 @@ const Dashboard = ({ user, events, onRefresh }) => {
                             )}
                         </div>
                     </section>
-                </div>
+                </div> */}
             </div>
 
             {/* Ticket Modal */}
